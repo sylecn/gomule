@@ -1,7 +1,7 @@
 projects
 .classpath
 GoMule.jar
-GoMule.zip
+GoMule*.zip
 .project
 matched.dualFP.txt
 Report.html

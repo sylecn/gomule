@@ -1,0 +1,80 @@
+#+STARTUP: overview
+
+gomule bugs and feature request
+* gomule should not allow put item in the cube if there is no cube in the :high:
+  user's inventory or stash.
+
+  currently if a charater doesn't have a cube and you put something there,
+  they will appear in gomule next time you open it in gomule.
+
+  I don't know what will happen if you pick up a cube in N Act2, save the
+  game, then open it in gomule.
+
+  GoMule should gray out the cube section, if the user still try to move item
+  there, display a message tell the user there is no cube on the char, so the
+  move is not possible.
+
+* DONE MAX gold in Stash should be at 2,500,000 from lv 1	   :bug:easy:
+  when transfer money using the gomule bank.
+
+  I have a lv 55 necromancer, has max gold, and can't deposite in gomule bank
+  because gomule doesn't want max gold to be more than 1,400,000 at that
+  level.
+* DONE gomule should preserve Skill Tab				:bug:wontfix:
+  currently after muling in gomule and go to game, press T, you will always at
+  the 3rd tab.
+  skill tree tab should be what the user choose when they left game last time.
+** I can't reproduce it now on a necromancer.
+* DONE gomule should keep oskill on switch weapon		:bug:wontfix:
+** how to reproduce the problem?
+   a sorc has a lower resist wand on 2nd weapon slot, and lower resist skill
+   on right click.
+   the sorc switch to main weapon.
+   quit game.
+   mule using gomule and save.
+   load char in d2, press W to switch to 2nd weapon, now the skill on right
+   click is not lower resist.
+** what should it be?
+   the skill (even oskill) on right click should preserve as long as the item
+   providing the skill is not moved off the char in gomule.
+
+
+*** Again. Can't reproduce it on necromancer.
+    has a staff with teleport charge on off-hand weapon.
+    main weapon RMB skill: Amp
+    switch RMB skill: teleport
+    quit game.
+    mule in gomule.
+    open char in game. still Amp & tele on RMB skill. no problem.
+* feature request: close all window (auto-save)
+  just like click on menu Project->Preferences then close.
+* feature request: allow custom sorting of stashes/chars
+* feature request: support multiple level of directories
+  so I can have:
+  Project: GoMule
+  D2
+  characters
+      current
+	  SHERO
+      suspend
+      dead
+  stashes
+      Charms
+	  Life
+	  Life_Mana
+	  AR
+	  AR_DAM
+	  Resistance
+      Gems
+	  chipped
+	  todo
+	  Perfect
+      Class
+	  ama
+	  sor
+	  dru
+	  nec
+	  asn
+	  bar
+	  pal
+** the tree status(expand/collapse) will be preserved between gomule sessions.
