@@ -2,7 +2,7 @@ The GoMule Project
 ==================
 
 Date: 2010-09-16
-Time-stamp: <2010-09-16>
+Time-stamp: <2010-10-05>
 
 What is GoMule?
 ---------------
@@ -30,8 +30,8 @@ I want to add some new features to GoMule, so I forked it.
 
 What's changed in this fork:
 * 
-* Max Gold is capped at 2500000 for all levels. [1.13c]
-* project changed to Git
+* Max Gold in Stash is capped at 2500000 for all levels. [1.13c]
+* version control system changed to Git
   CVS files removed.
   added dependent lirary: ws-xmlrpc
   added 'ant release' target, pdf manual is included in release.

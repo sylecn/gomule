@@ -1,22 +1,22 @@
 /*******************************************************************************
- * 
+ *
  * Copyright 2007 Andy Theuninck, Randall & Silospen
- * 
+ *
  * This file is part of gomule.
- * 
+ *
  * gomule is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * gomule is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * gomlue; if not, write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA 02110-1301 USA
- *  
+ *
  ******************************************************************************/
 
 package gomule.d2s;
@@ -112,11 +112,11 @@ public class D2Character extends D2ItemListAdapter
 
 	D2TxtFileItemProperties mercHireCol;
 	private HashMap cMercInfo;
-	private int[] mStats = new int[31];	
+	private int[] mStats = new int[31];
 
 	private int lWoo;
 	private int iWS;
-	private int	iGF; 
+	private int	iGF;
 	private int	iIF;
 	private int iKF;
 	private int iJF;
@@ -245,7 +245,7 @@ public class D2Character extends D2ItemListAdapter
 		if ( iIF < iGF )throw new Exception("Error: Stats / Skills not correct");
 		readWaypoints();
 		readQuests();
-		try{	
+		try{
 			readStats();
 		}catch (ArrayIndexOutOfBoundsException e){
 			iIF = iReader.findNextFlag("if", iIF +1);
@@ -269,8 +269,8 @@ public class D2Character extends D2ItemListAdapter
 	}
 
 	private void readStats() throws Exception {
-		// now copy the block into the Flavie bitreader 
-		// (it can read integers unaligned to bytes which is needed here) 
+		// now copy the block into the Flavie bitreader
+		// (it can read integers unaligned to bytes which is needed here)
 		iReader.set_byte_pos(iGF);
 		byte lInitialBytes[] = iReader.get_bytes(iIF - iGF);
 
@@ -313,7 +313,7 @@ public class D2Character extends D2ItemListAdapter
 		int resCounter = 0;
 		for(int x = 0;x<3;x=x+1){
 			if(iQuests[x][4][2] == true)resCounter ++;
-		}		
+		}
 		cStats[18] = cStats[18] + (10*resCounter);
 		cStats[19] = cStats[19] + (10*resCounter);
 		cStats[20] = cStats[20] + (10*resCounter);
@@ -462,7 +462,7 @@ public class D2Character extends D2ItemListAdapter
 					iQuests[x][y] = tempQ;
 					break;
 				}
-				tempQ = new boolean[6];	
+				tempQ = new boolean[6];
 			}
 		}
 	}
@@ -602,7 +602,7 @@ public class D2Character extends D2ItemListAdapter
 		switch((int)iReader.read(8)){
 		case 0:
 			golemItem = null;
-			return;		
+			return;
 		}
 		int lItemStart = iReader.findNextFlag("JM", iKF);
 		if (lItemStart == -1)throw new Exception("Golem item not found.");
@@ -615,7 +615,7 @@ public class D2Character extends D2ItemListAdapter
 		long xpOut = 0;
 		int lev = 0;
 		do{
-			xpOut = xpPLev * lev*lev*(lev+1);    		
+			xpOut = xpPLev * lev*lev*(lev+1);
 			if(xpOut > ((Long)cMercInfo.get("xp")).longValue()){
 				lev = lev -1;
 				break;
@@ -663,7 +663,7 @@ public class D2Character extends D2ItemListAdapter
 							if(cSkills[s][t] > 0)cSkills[s][t] = cSkills[s][t] + pVals[1];
 						}
 					}
-				}	
+				}
 			break;
 			case(97):
 				if(!D2TxtFile.SKILLS.getRow(pVals[0]).get("charclass").equals(cClass))continue;
@@ -697,8 +697,8 @@ public class D2Character extends D2ItemListAdapter
 				switch((int)lCharCode){
 				case 0:
 					if(cSkills[0][1] > 0)cSkills[0][1] = cSkills[0][1] + pVals[0];
-					if(cSkills[0][4] > 0)cSkills[0][4] = cSkills[0][4] + pVals[0]; 
-					if(cSkills[0][8] > 0)cSkills[0][8] = cSkills[0][8] + pVals[0]; 
+					if(cSkills[0][4] > 0)cSkills[0][4] = cSkills[0][4] + pVals[0];
+					if(cSkills[0][8] > 0)cSkills[0][8] = cSkills[0][8] + pVals[0];
 					break;
 				case 1:
 					for(int t = 0;t<10;t=t+1){
@@ -731,7 +731,7 @@ public class D2Character extends D2ItemListAdapter
 			break;
 			case(188):
 				for(int t = 0;t<10;t=t+1){
-					if((pVals[0]-(getCharCode() * 8) ) > -1 && (pVals[0]-(getCharCode() * 8) ) < 4){  
+					if((pVals[0]-(getCharCode() * 8) ) > -1 && (pVals[0]-(getCharCode() * 8) ) < 4){
 						if(cSkills[pVals[0]-(getCharCode() * 8)][t] > 0)cSkills[pVals[0]-(getCharCode() * 8)][t] = cSkills[pVals[0]-(getCharCode() * 8)][t] + pVals[1];
 					}
 				}
@@ -747,18 +747,18 @@ public class D2Character extends D2ItemListAdapter
 				if(getCharItem(x).get_body_position() == 4 ||getCharItem(x).get_body_position() == 5){
 					updateCharStats("P", getCharItem(x));
 				}
-			}	
-			curWep = 1;	
+			}
+			curWep = 1;
 			for(int x = 0;x<getCharItemNr();x=x+1){
 				if(getCharItem(x).get_body_position() == 11 ||getCharItem(x).get_body_position() == 12){
-					updateCharStats("D", getCharItem(x));	
+					updateCharStats("D", getCharItem(x));
 				}
 			}
 			return;
 		case 1:
 			for(int x = 0;x<iCharItems.size();x=x+1){
 				if(getCharItem(x).get_body_position() == 11 ||getCharItem(x).get_body_position() == 12){
-					updateCharStats("P", getCharItem(x));	
+					updateCharStats("P", getCharItem(x));
 				}
 			}
 			curWep = 0;
@@ -1427,19 +1427,21 @@ public class D2Character extends D2ItemListAdapter
 	}
 
 	public int getGoldBankMax(){
-		int lMaxGold = 50000;
-		for ( int lLvl = 9 ; lLvl <=29 ; lLvl+=10 ){
-			if ( iCharLevel < lLvl )return lMaxGold;
-			lMaxGold += 50000;
-		}
-		if ( iCharLevel == 30 )return 200000;
-		if ( iCharLevel == 31 )return 800000;
-		lMaxGold = 850000;
-		for ( int lLvl = 33 ; lLvl <=99 ; lLvl+=2 ){
-			if ( iCharLevel <= lLvl )return lMaxGold;
-			lMaxGold += 50000;
-		}
-		return 0;
+		// int lMaxGold = 50000;
+		// for ( int lLvl = 9 ; lLvl <=29 ; lLvl+=10 ){
+		// 	if ( iCharLevel < lLvl )return lMaxGold;
+		// 	lMaxGold += 50000;
+		// }
+		// if ( iCharLevel == 30 )return 200000;
+		// if ( iCharLevel == 31 )return 800000;
+		// lMaxGold = 850000;
+		// for ( int lLvl = 33 ; lLvl <=99 ; lLvl+=2 ){
+		// 	if ( iCharLevel <= lLvl )return lMaxGold;
+		// 	lMaxGold += 50000;
+		// }
+		// return 0;
+		// In 1.13 patch, stash gold capacity is fixed at 2,500,000
+		return 2500000;
 	}
 
 	public void fullDump(PrintWriter pWriter){
@@ -1450,17 +1452,17 @@ public class D2Character extends D2ItemListAdapter
 		StringBuffer out = new StringBuffer();
 		out.append(getStatString());
 		out.append("\n\n");
-		
+
 		ArrayList skillArr = D2TxtFile.SKILLS.searchColumnsMultipleHits("charclass", cClass);
 		String[] skillTrees = new String[]{"","",""};
 		int[] skillCounter = new int[3];
-		
+
 		for(int x = 0;x<skillArr.size();x=x+1){
 			int page = Integer.parseInt((D2TxtFile.SKILL_DESC.getRow(Integer.parseInt(((D2TxtFileItemProperties)skillArr.get(x)).get("Id")))).get("SkillPage"));
 			skillTrees[page-1] = skillTrees[page-1] + D2TblFile.getString(D2TxtFile.SKILL_DESC.searchColumns("skilldesc",((D2TxtFileItemProperties)skillArr.get(x)).get("skilldesc")).get("str name"))+ ": " +  initSkills[page-1][skillCounter[page-1]] + "/" + cSkills[page-1][skillCounter[page-1]] + "\n";
 			skillCounter[page -1] ++;
 		}
-		
+
 		for(int x = 0;x<skillTrees.length;x++){
 			out.append(skillTrees[x]);
 			out.append("\n");
@@ -1475,10 +1477,10 @@ public class D2Character extends D2ItemListAdapter
 		}
 		out.append("Mercenary:"+"\n");
 		out.append("\n");
-		
+
 		out.append(getMercStatString());
 		out.append("\n\n");
-		
+
 		if ( iMercItems != null ){
 			for ( int i = 0 ; i < iMercItems.size() ; i++){
 				D2Item lItem = (D2Item) iMercItems.get(i);
@@ -1496,7 +1498,7 @@ public class D2Character extends D2ItemListAdapter
 	}
 
 	public void equipItem(D2Item item){
-		if(!item.isEquipped(curWep))return;  
+		if(!item.isEquipped(curWep))return;
 		if(item.isSet())addSetItem(item);
 		generateItemStats(item, cStats, plSkill, 1,0);
 		dealWithSkills();
@@ -1504,7 +1506,7 @@ public class D2Character extends D2ItemListAdapter
 	}
 
 	public void unequipItem(D2Item item){
-		if(!item.isEquipped(curWep))return;  
+		if(!item.isEquipped(curWep))return;
 		if(item.isSet())remSetItem(item);
 		generateItemStats(item, cStats, plSkill, -1,0);
 		dealWithSkills();
@@ -1517,7 +1519,7 @@ public class D2Character extends D2ItemListAdapter
 			if(!((D2Item) iCharItems.get(x)).isEquipped(curWep))continue;
 			if( D2TxtFile.FULLSET.searchColumns("index", D2TxtFile.SETITEMS.getRow(((D2Item)(iCharItems.get(x))).getSetID()).get("set")).getRowNum() == setNo){
 				modSetProps(((D2Item) iCharItems.get(x)), setTracker[setNo], 1);
-			}		
+			}
 		}
 	}
 
@@ -1534,7 +1536,7 @@ public class D2Character extends D2ItemListAdapter
 					((D2Prop)sItem.getPropCollection().get(x)).setQFlag(((D2Prop)sItem.getPropCollection().get(x)).getQFlag() + 10);
 				}else if((sItem.getSetSize() == trackVal[0] && ((D2Prop)sItem.getPropCollection().get(x)).getQFlag() == 26)){
 					//Add display for full set
-					((D2Prop)sItem.getPropCollection().get(x)).setQFlag(((D2Prop)sItem.getPropCollection().get(x)).getQFlag() + 10);				
+					((D2Prop)sItem.getPropCollection().get(x)).setQFlag(((D2Prop)sItem.getPropCollection().get(x)).getQFlag() + 10);
 				}
 			break;
 			case(-1):
@@ -1546,7 +1548,7 @@ public class D2Character extends D2ItemListAdapter
 					((D2Prop)sItem.getPropCollection().get(x)).setQFlag(((D2Prop)sItem.getPropCollection().get(x)).getQFlag() - 10);
 				}else if((sItem.getSetSize() == trackVal[0] && ((D2Prop)sItem.getPropCollection().get(x)).getQFlag() == 36)){
 					//Add Display for full set
-					((D2Prop)sItem.getPropCollection().get(x)).setQFlag(((D2Prop)sItem.getPropCollection().get(x)).getQFlag() - 10);					
+					((D2Prop)sItem.getPropCollection().get(x)).setQFlag(((D2Prop)sItem.getPropCollection().get(x)).getQFlag() - 10);
 				}
 			break;
 			}
@@ -1564,7 +1566,7 @@ public class D2Character extends D2ItemListAdapter
 			if(!((D2Item) iCharItems.get(x)).isEquipped(curWep))continue;
 			if( D2TxtFile.FULLSET.searchColumns("index", D2TxtFile.SETITEMS.getRow(((D2Item)(iCharItems.get(x))).getSetID()).get("set")).getRowNum() == setNo){
 				modSetProps(((D2Item) iCharItems.get(x)), setTracker[setNo], -1);
-			}		
+			}
 		}
 		setTracker[setNo][0]  -- ;
 	}
