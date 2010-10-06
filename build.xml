@@ -1,0 +1,100 @@
+<project name="GoMule" default="Jar-Build" basedir=".">
+<!-- project name="GoMule" default="Jar-BuildAll" basedir="." -->
+
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="bin"/>
+  <property name="resources" location="resources"/>
+  <property name="dist" location="."/>
+
+  <path id="basic_classpath">
+    <pathelement path="${classpath}"/>
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="clean">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete file="${dist}/GoMule.jar"/>
+    <delete file="${dist}/GoMule.zip"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac destdir="${build}" debug="on" target="1.4" classpathref="basic_classpath">
+      <src path="${src}"/>
+    </javac>
+  </target>
+
+  <target name="compile MBR" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac destdir="${build}" debug="on" target="1.4" classpathref="basic_classpath" excludes="TestyMcTest/**, gomule/dropCalc/remote/**">
+        <src path="${src}"/>
+    </javac>
+  </target>
+
+  <target name="compileDeprecated" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac destdir="${build}" debug="on" deprecation="on" classpathref="basic_classpath">
+        <src path="${src}"/>
+    </javac>
+  </target>
+
+  <target name="compileOptimized" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac destdir="${build}" optimize="on" target="1.4" classpathref="basic_classpath">
+        <src path="${src}"/>
+    </javac>
+  </target>
+
+  <target name="build" depends="compile" description="Build"/>
+
+  <target name="build MBR" depends="compile MBR" description="Build"/>
+
+  <target name="buildAll" depends="clean, compile" description="Build All"/>
+
+  <target name="buildAll MBR" depends="clean, compile MBR" description="Build All"/>
+
+  <target name="makeJar">
+    <!-- Put everything in ${build} into the ${dist}/GoMule.jar file -->
+    <jar jarfile="${dist}/GoMule.jar" manifest="MANIFEST.MF">
+		<fileset dir="${build}" />
+    	<!-- fileset dir="${resources}" / -->
+  	</jar>
+  </target>
+
+  <target name="Jar-Build" depends="build, makeJar"
+        description="build and Jar for GoMule" >
+  </target>
+
+  <target name="Jar-BuildAll" depends="buildAll, makeJar"
+        description="build all and Jar for GoMule" >
+  </target>
+
+  <target name="Jar-BuildAll MBR" depends="buildAll MBR, makeJar"
+        description="build all and Jar for GoMule" >
+  </target>
+
+  <target name="Jar-BuildAllOptimezed" depends="clean,compileOptimized, makeJar" >
+  </target>
+
+  <target name="release" depends="Jar-Build"
+	  description="Make a zip file for release. The zip file contains everything the user needs to run GoMule.">
+    <delete file="${dist}/GoMule.zip" quiet="true" />
+    <zip destfile="${dist}/GoMule.zip">
+      <zipfileset dir="." includesfile="release.include" prefix="GoMule" />
+      <zipfileset file="docs/GoMuleDocs/DonkeyDoc.pdf" fullpath="GoMule/UserGuide.pdf" />
+    </zip>
+  </target>
+
+</project>
+
