@@ -1,7 +1,45 @@
 #+STARTUP: overview
 
 gomule bugs and feature request
-* gomule should not allow put item in the cube if there is no cube in the :high:
+* 
+* feature: auto grab and sort for common items. 		:low:feature:
+  detect common items from current character, grab them and place them into
+  pre-defined stashes.
+
+  This is like the filter in email client.
+  user can define rules, gomule will filter items and place items according to
+  the rules.
+
+** my rules as example:
+   // gems
+   in [default area], select [gems, flawless gems], drop to [sc_todo].
+   in [default area], select [perfect gems], drop to [sc_craft].
+   in [default area], select [chipped diamond], drop to [sc_lesser].
+   // runes
+   in [default area], select [runes El-Thul], drop to [sc_lesser].
+   in [default area], select [runes Amn-Hel], drop to [sc_begin].
+   in [default area], select [runes Io-Gul], drop to [sc_main].
+   in [default area], select [runes Vex-Zod], drop to [sc_godly].
+   // grey socketed item
+   in [], select [grey item], drop to [sc_rw].
+   // essense drop to sc_essense
+
+   default area is defined in options page and can be changed by user.
+   my settings for default area:
+   first 4 columns of inventory space.
+   all stash space except last grid on the bottom right.
+** UI
+   add a button in toolbar: 'auto drop'
+   the auto drop window:
+
+   character: CHAR_NAME
+   rules:
+   | rule1 |     run select rule
+   | rule2 |     run all
+   | rule3 |
+   | rule4 |
+
+* TODO gomule should not allow put item in the cube if there is no cube in the :high:
   user's inventory or stash.
 
   currently if a charater doesn't have a cube and you put something there,
@@ -13,6 +51,12 @@ gomule bugs and feature request
   GoMule should gray out the cube section, if the user still try to move item
   there, display a message tell the user there is no cube on the char, so the
   move is not possible.
+* resistance calculation is wrong.					:bug:
+  I notice resistance in game is way different from what's shown in gomule.
+  even 50% differ.
+
+  edit: sometimes it is wrong. not sure when.
+  the base code really need a review.
 
 * DONE MAX gold in Stash should be at 2,500,000 from lv 1	   :bug:easy:
   when transfer money using the gomule bank.
@@ -46,9 +90,12 @@ gomule bugs and feature request
     quit game.
     mule in gomule.
     open char in game. still Amp & tele on RMB skill. no problem.
-* feature request: close all window (auto-save)
+* feature request: close all window (auto-save)			       :easy:
+  Add a "Close All Window" button on toolbar.
+
   just like click on menu Project->Preferences then close.
-* feature request: allow custom sorting of stashes/chars
+* feature request: allow ordering of stashes/chars
+  the default is sort by alphabetic, while the user may not want that.
 * feature request: support multiple level of directories
   so I can have:
   Project: GoMule
