@@ -1,22 +1,22 @@
 /*******************************************************************************
- * 
- * Copyright 2007 Randall
- * 
+ *
+ * Copyright 2007, 2010 Randall
+ *
  * This file is part of gomule.
- * 
+ *
  * gomule is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * gomule is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * gomlue; if not, write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA 02110-1301 USA
- *  
+ *
  ******************************************************************************/
 package gomule.gui;
 
@@ -39,7 +39,7 @@ import randall.util.*;
 public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2ItemListListener
 {
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -5346518067556935604L;
 	private D2FileManager iFileManager;
@@ -58,7 +58,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     private JButton 	  iPickup;
     private JButton       iDropOne;
     private JButton       iDropAll;
-    
+
     // item types
     private JCheckBox     iTypeUnique;
     private JCheckBox     iTypeSet;
@@ -75,13 +75,13 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     private JRadioButton  iCatCharm;
     private JRadioButton  iCatMisc;
     private JRadioButton  iCatAll;
-    
+
     private RandallPanel  iArmorFilter;
     private ArrayList	  iArmorFilterList;
-    
+
     private RandallPanel  iWeaponFilter;
     private ArrayList	  iWeaponFilterList;
-    
+
     private RandallPanel  iSocketFilter;
     private JRadioButton  iCatSocketJewel;
     private JRadioButton  iCatSocketGem;
@@ -97,9 +97,10 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     private RandallPanel  iMiscFilter;
     private JRadioButton  iCatMiscAmulet;
     private JRadioButton  iCatMiscRing;
+    private JRadioButton  iCatMiscEssence;
     private JRadioButton  iCatMiscOther;
     private JRadioButton  iCatMiscAll;
-    
+
     private RandallPanel  iRequerementFilter;
     private JTextField	  iReqMaxLvl;
     private JTextField	  iReqMaxStr;
@@ -115,23 +116,23 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	private JCheckBox iCatSock5;
 	private JCheckBox iCatSock6;
 	private JCheckBox iCatSockAll;
-	
+
 	private JCheckBox iQualEth;
 	private JCheckBox iQualNorm;
 	private JCheckBox iQualExce;
 	private AbstractButton iQualEli;
 	private AbstractButton iQualAll;
 	private JCheckBox iQualOther;
-	
+
 	private JButton iCusFilter;
 
     public D2ViewStash(D2FileManager pMainFrame, String pFileName)
     {
         super( pFileName, true, true, false, true);
-        
+
         addInternalFrameListener(new InternalFrameAdapter()
         {
-//            public void internalFrameOpened(InternalFrameEvent e) 
+//            public void internalFrameOpened(InternalFrameEvent e)
 //            {
 //                System.err.println("internalFrameOpened()");
 //                iTable.requestFocus();
@@ -144,7 +145,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             }
         });
 
-        
+
         iFileManager = pMainFrame;
         iFileName = pFileName;
         iStashName = getStashName( iFileName );
@@ -157,7 +158,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iTable = new JTable(iItemModel);
         iTable.addKeyListener(new KeyAdapter()
         {
-            public void keyReleased(KeyEvent e) 
+            public void keyReleased(KeyEvent e)
             {
                 if ( e.getKeyCode() == KeyEvent.VK_Z )
                 {
@@ -177,20 +178,20 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 }
             }
         });
-        
+
 //        Font lFont = iTable.getTableHeader().getFont();
 //            iTable.getTableHeader().setFont( new Font(lFont.getName(), lFont.getStyle(), lFont.getSize()-2) );
-        iTable.getTableHeader().addMouseListener( new MouseAdapter() 
+        iTable.getTableHeader().addMouseListener( new MouseAdapter()
         {
-            public void mouseReleased(MouseEvent e) 
+            public void mouseReleased(MouseEvent e)
             {
                 if ( e.getSource() instanceof JTableHeader )
                 {
                     JTableHeader lHeader = (JTableHeader) e.getSource();
                     int lHeaderCol = lHeader.columnAtPoint(new Point(e.getX(), e.getY()));
-                    
+
                     lHeaderCol = lHeader.getColumnModel().getColumn(lHeaderCol).getModelIndex();
-                    
+
                     if ( lHeaderCol != -1 )
                     {
                         iItemModel.sortCol(lHeaderCol);
@@ -198,7 +199,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 }
             }
         });
-        
+
         iTable.setDefaultRenderer(String.class, new D2CellStringRenderer() );
         iTable.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             iTable.getColumnModel().getColumn(0).setPreferredWidth(140);
@@ -207,10 +208,10 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iTable.getColumnModel().getColumn(3).setPreferredWidth(15);
         JScrollPane lPane = new JScrollPane(iTable);
         lPane.setPreferredSize(new Dimension(257, 100));
-        
+
         JSplitPane stashConts = new JSplitPane();
         stashConts.setLeftComponent(lPane);
-        
+
 //        iContentPane.add(lPane, BorderLayout.WEST);
 
         RandallPanel lButtonPanel = getButtonPanel();
@@ -226,7 +227,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iReqMaxDex = new JTextField();
         iReqMaxDex.getDocument().addDocumentListener(iStashFilter);
         iCusFilter = new JButton("Filter...");
-        
+
         iCusFilter.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent pEvent)
@@ -235,16 +236,16 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             }
 
 			private void filterPopUp() {
-				
-				
-				
+
+
+
 				final JFrame filterPanel = new JFrame();
 				filterPanel.setTitle("Item Filter");
 				filterPanel.setLocation((int)iContentPane.getLocationOnScreen().getX() + 100,(int)iContentPane.getLocationOnScreen().getY() + 100);
 				filterPanel.setSize(500,300);
 				filterPanel.setVisible(true);
 				filterPanel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				
+
 				Box hRoot = Box.createHorizontalBox();
 				Box vControl = Box.createVerticalBox();
 				Box hVal = Box.createHorizontalBox();
@@ -252,7 +253,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 				Box hLabel1 = Box.createHorizontalBox();
 				Box hLabel2 = Box.createHorizontalBox();
 				Box hLabel3 = Box.createHorizontalBox();
-							
+
 				final JTextField fStrIn = new JTextField();
 				final JTextField fNumIn = new JTextField();
 				final JRadioButton fMin = new JRadioButton("Min");
@@ -264,8 +265,8 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 					fNumIn.setText(iItemModel.filterVal + "");
 				}
 				fStrIn.setText(iItemModel.filterString);
-				
-				
+
+
 				if(iItemModel.filterMin){
 					fMin.setSelected(true);
 					fMax.setSelected(false);
@@ -273,111 +274,111 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 					fMax.setSelected(true);
 					fMin.setSelected(false);
 				}
-				
+
 				fMin.addActionListener(new ActionListener(){
 
 					public void actionPerformed(ActionEvent arg0) {
-						
+
 						if(fMax.isSelected()){
 							fMax.setSelected(false);
 						}
 						fMin.setSelected(true);
 						iItemModel.filterMin = true;
 					}
-					
-					
+
+
 				});
-				
+
 				fMax.addActionListener(new ActionListener(){
 
 					public void actionPerformed(ActionEvent arg0) {
-						
-						
+
+
 						if(fMin.isSelected()){
 							fMin.setSelected(false);
 						}
-						
+
 						fMax.setSelected(true);
 						iItemModel.filterMin = false;
 					}
-					
-					
+
+
 				});
-				
+
 				fOk.addActionListener(new ActionListener(){
 	            public void actionPerformed(ActionEvent pEvent)
 	            {
-				
+
 	            	iItemModel.filterString = fStrIn.getText();
 	            	try{
 	            		if(fNumIn.getText().equals("")){
-	            		
+
 	            			iItemModel.filterVal = -1337;
-	            			
+
 	            		}else{
 	            	iItemModel.filterVal = Integer.parseInt(fNumIn.getText());
 	            		}
-	            		
+
 						iItemModel.filterOn = true;
 //						iItemModel.filterString = "getting magic";
 //						iItemModel.filterVal = 10;
-						
+
 						itemListChanged();
-		            	
-		            	
+
+
 		            	filterPanel.dispose();
-		            	
+
 	            	}catch(NumberFormatException e){
 	            		e.printStackTrace();
 	            		iItemModel.filterVal = 0;
 	            		fNumIn.setBackground(Color.red);
 	            	}
-	            	
 
-	            	
+
+
 	            }
-				
+
 				});
-				
+
 				JButton fClear = new JButton("Clear");
-				
+
 				fClear.addActionListener(new ActionListener(){
 	            public void actionPerformed(ActionEvent pEvent)
 	            {
-				
+
 	            	fNumIn.setBackground(Color.white);
 					iItemModel.filterOn = false;
 					iItemModel.filterString = "";
 					iItemModel.filterVal = 0;
-					
+
 	            	fStrIn.setText("");
-	            	
-	            	fNumIn.setText("");	            	
-					
+
+	            	fNumIn.setText("");
+
 	            	itemListChanged();
-	            	
-					
-	            	
+
+
+
 	            }
-				
+
 				});
-				
+
 				JButton fCancel = new JButton("Cancel");
-				
+
 				fCancel.addActionListener(new ActionListener(){
 	            public void actionPerformed(ActionEvent pEvent)
 	            {
-				
+
 	            	filterPanel.dispose();
-	            	
+
 	            }
-				
+
 				});
-				
+
 				filterPanel.getContentPane().add(hRoot);
 //				hRoot.add(Box.createRigidArea(new Dimension(250,0)));
-				
-				
+
+
 				vControl.add(hLabel3);
 				hLabel3.add(new JLabel("The superfantastic finder machine."));
 				hLabel3.add(Box.createRigidArea(new Dimension(10,0)));
@@ -394,28 +395,28 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 				vControl.add(Box.createRigidArea(new Dimension(0,50)));
 				vControl.add(hButtons);
 				vControl.add(Box.createRigidArea(new Dimension(0,50)));
-			
+
 				hVal.add(fNumIn);
 				hVal.add(fMin);
 				hVal.add(fMax);
-				
+
 				hButtons.add(fOk);
 				hButtons.add(fClear);
 				hButtons.add(fCancel);
-				
+
 				Box lazy = Box.createVerticalBox();
-				
+
 				lazy.add(new JLabel("I'm too lazy to code"));
 				lazy.add(new JLabel("what should be here."));
-				
+
 				hRoot.add(lazy);
 				hRoot.add(Box.createRigidArea(new Dimension(100, 0)));
 				hRoot.add(vControl);
 				filterPanel.validate();
 			}
         });
-        
-        
+
+
         iRequerementFilter.addToPanel(new JLabel("MaxLvl"), 0, 0, 1, RandallPanel.NONE);
         iRequerementFilter.addToPanel(iReqMaxLvl, 1, 0, 1, RandallPanel.HORIZONTAL);
         iRequerementFilter.addToPanel(new JLabel("MaxStr"), 2, 0, 1, RandallPanel.NONE);
@@ -423,14 +424,14 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iRequerementFilter.addToPanel(new JLabel("MaxDex"), 4, 0, 1, RandallPanel.NONE);
         iRequerementFilter.addToPanel(iReqMaxDex, 5, 0, 1, RandallPanel.HORIZONTAL);
         iRequerementFilter.addToPanel(iCusFilter, 6, 0, 1, RandallPanel.HORIZONTAL);
-        
+
         RandallPanel lTopPanel = new RandallPanel();
         lTopPanel.addToPanel(lButtonPanel, 0, 0, 1, RandallPanel.HORIZONTAL);
         lTopPanel.addToPanel(lQualityPanel, 0, 1, 1, RandallPanel.HORIZONTAL);
         lTopPanel.addToPanel(lTypePanel, 0, 2, 1, RandallPanel.HORIZONTAL);
         lTopPanel.addToPanel(lCategoryPanel, 0, 3, 1, RandallPanel.HORIZONTAL);
         lTopPanel.addToPanel(iRequerementFilter, 0, 4, 1, RandallPanel.HORIZONTAL);
-        
+
 
         iContentPane.add(lTopPanel, BorderLayout.NORTH);
 
@@ -444,7 +445,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         lItemPanel.setPreferredSize(new Dimension(250, 100));
 
 //        iContentPane.add(lItemPanel, BorderLayout.CENTER);
-        
+
         stashConts.setRightComponent(lItemPanel);
         stashConts.setDividerSize(3);
         stashConts.setDividerLocation(257);
@@ -454,13 +455,13 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         pack();
         setSize(514, 500);
         setVisible(true);
-        
-        
+
+
         connect();
 
         if (iTable != null)
         {
-        	
+
         	iTable.addMouseListener(new MouseListener(){
 
 				public void mouseClicked(MouseEvent arg0) {
@@ -473,7 +474,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 				public void mousePressed(MouseEvent arg0) {}
 				public void mouseReleased(MouseEvent arg0) {}
         	});
-        	
+
             iTable.getSelectionModel().addListSelectionListener(
                     new ListSelectionListener()
                     {
@@ -481,13 +482,13 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                         {
                             if (iTable.getSelectedRowCount() == 1)
                             {
-                            	
+
                             	String dispStr = iItemModel.getItem(iTable.getSelectedRow()).itemDumpHtml(true).replaceAll("<[/]*html>", "");
                                 if(!isStash()){
                                 	iItemText.setText("<html><font size=3 face=Dialog><font color = white>Item From: "+(((D2ItemListAll) iStash).getFilename(iItemModel.getItem(iTable.getSelectedRow())))+"</font><br><br>"+dispStr+"</font></html>");
                                 }else{
                                 	iItemText.setText("<html><font size=3 face=Dialog>"+dispStr+"</font></html>");
-                                    
+
                                 }
                                 iItemText.setCaretPosition(0);
                             }
@@ -503,32 +504,32 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             iTable.setRowSelectionInterval(0,0);
         }
     }
-    
+
     public static String getStashName(String pFileName)
     {
         ArrayList lList = RandallUtil.split(pFileName, File.separator, true);
         return (String) lList.get(lList.size()-1);
     }
-    
+
     public void activateView()
     {
         toFront();
         requestFocusInWindow();
         iTable.requestFocus();
     }
-    
+
     public boolean isStash()
     {
         return !"all".equalsIgnoreCase( iFileName );
     }
-    
+
     public void connect()
     {
         try
         {
             iStash = iFileManager.addItemList(iFileName, this);
             itemListChanged();
-            
+
             if ( isStash() )
             {
 	            iPickup.setEnabled(true);
@@ -550,9 +551,9 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         catch( Exception pEx ){
             disconnect(pEx);
         }
-        
+
     }
-    
+
     public void disconnect(Exception pEx)
     {
         if ( iStash != null )
@@ -571,7 +572,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 }
             }
         }
-        
+
         iStash = null;
         iPickup.setEnabled(false);
         iDropOne.setEnabled(false);
@@ -588,7 +589,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         return iStash.isSC();
     }
-    
+
     private RandallPanel getButtonPanel()
     {
         RandallPanel lButtonPanel = new RandallPanel(true);
@@ -635,7 +636,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 itemListChanged();
             }
         });
-        
+
         iDelete.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent pEvent)
@@ -654,14 +655,14 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                     {
                     	iStash.ignoreItemListEvents();
                         for (int i = 0; i < lItemList.size(); i++)
-                        {				
+                        {
                        int check = JOptionPane.showConfirmDialog(null, "Delete " + ((D2Item) lItemList.get(i)).getName() + "?");
-                        
+
 						if(check == 0){
                             iStash.removeItem((D2Item) lItemList.get(i));
 						}
 						}
-                        
+
                     }
                     finally
                     {
@@ -672,18 +673,18 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             }
         });
         lButtonPanel.addToPanel(iDelete, 3, 0, 1, RandallPanel.HORIZONTAL);
-        
+
 
         iDeleteDups.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent pEvent)
             {
               int check = JOptionPane.showConfirmDialog(null, "WARNING: WILL DELETE ALL DUAL FPS. CONTINUE?");
-              
+
 				if(check != 0){
                   return;
 				}
-            	
+
                 HashMap lItemList = new HashMap();
 
                     for (int i = 0; i < iTable.getRowCount(); i++)
@@ -692,31 +693,31 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                         lItemList.put(iItemModel.getItem(i).getFingerprint(),iItemModel.getItem(i));
                     	}
                     }
-                    
-                    
+
+
                     try
                     {
                     	iStash.ignoreItemListEvents();
-                        
+
                         for (int i = 0; i < iTable.getRowCount(); i++)
                         {
                         	if(iItemModel.getItem(i).getFingerprint() != null && !iItemModel.getItem(i).getFingerprint().equals("")){
                             iStash.removeItem(iItemModel.getItem(i));
                         	}
                         }
-                        
+
                         Iterator it = lItemList.keySet().iterator();
                      while(it.hasNext()){
                         	((D2Stash) iStash).addItem(((D2Item)lItemList.get(it.next())));
                      }
-                        
+
                     }
                     finally
                     {
                     	 iStash.listenItemListEvents();
                     }
                     itemListChanged();
-                
+
             }
         });
         if(isStash()){
@@ -785,15 +786,15 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         return lTypePanel;
     }
 
-    
+
     private RandallPanel getQualityPanel()
     {
         RandallPanel lQualPanel = new RandallPanel(true);
 
-        
-        
 
-        
+
+
+
         iQualNorm = new JCheckBox("Normal");
         iQualNorm.addActionListener(iStashFilter);
         lQualPanel.addToPanel(iQualNorm, 0, 0, 1, RandallPanel.HORIZONTAL);
@@ -812,13 +813,13 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iQualAll = new JCheckBox("All");
         iQualAll.addActionListener(iStashFilter);
         lQualPanel.addToPanel(iQualAll, 5, 0, 1, RandallPanel.HORIZONTAL);
-        
+
         iQualAll.setSelected(true);
 
         return lQualPanel;
     }
 
-    
+
     private RandallPanel getCategoryPanel()
     {
         RandallPanel lCategoryPanel = new RandallPanel();
@@ -836,7 +837,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         ButtonGroup lCatBtnGroup = new ButtonGroup();
         RandallPanel lCategories = new RandallPanel(true);
         int lRow = 0;
-        
+
         iCatArmor = new JRadioButton("Armor");
         iCatArmor.addActionListener(iStashFilter);
         lCategories.addToPanel(iCatArmor, 0, lRow, 1, 0.7, RandallPanel.HORIZONTAL);
@@ -870,39 +871,39 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 
         iCatAll.setSelected(true);
         lRow++;
-        
+
         iArmorFilter = getCategoriesArmor();
         iArmorFilter.setVisible(false);
         lCategories.addToPanel(iArmorFilter, 0, lRow++, 5, RandallPanel.HORIZONTAL);
-        
+
         iWeaponFilter = getCategoriesWeapon();
         iWeaponFilter.setVisible(false);
         lCategories.addToPanel(iWeaponFilter, 0, lRow++, 5, RandallPanel.HORIZONTAL);
-        
+
         iSocketFilter = getCategoriesSocket();
         iSocketFilter.setVisible(false);
         lCategories.addToPanel(iSocketFilter, 0, lRow++, 5, RandallPanel.HORIZONTAL);
-        
+
         iCharmFilter = getCategoriesCharm();
         iCharmFilter.setVisible(false);
         lCategories.addToPanel(iCharmFilter, 0, lRow++, 5, RandallPanel.HORIZONTAL);
-        
+
         iMiscFilter = getCategoriesMisc();
         iMiscFilter.setVisible(false);
         lCategories.addToPanel(iMiscFilter, 0, lRow++, 5, RandallPanel.HORIZONTAL);
-        
+
         iSockFilter = getCategoriesSock();
         iSockFilter.setVisible(false);
         lCategories.addToPanel(iSockFilter, 0, lRow++, 5, RandallPanel.HORIZONTAL);
-        
+
         return lCategories;
     }
-    
+
     private RandallPanel getCategoriesArmor()
     {
         ButtonGroup lCatArmorBtnGroup = new ButtonGroup();
         RandallPanel lCategoriesArmor = new RandallPanel(true);
-        
+
         iArmorFilterList = new ArrayList();
         ArrayList lArmorFilterList = D2BodyLocations.getArmorFilterList();
         for ( int i = 0 ; i < lArmorFilterList.size() ; i++ )
@@ -920,7 +921,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             }
             iArmorFilterList.add(lBtn);
         }
-        
+
         return lCategoriesArmor;
     }
 
@@ -928,11 +929,11 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         ButtonGroup lCatWeaponBtnGroup = new ButtonGroup();
         RandallPanel lCategoriesWeapon = new RandallPanel(true);
-        
+
         int lCurrentRowNr = 0;
         RandallPanel lCurrentRow = new RandallPanel(true);
         lCategoriesWeapon.addToPanel(lCurrentRow, 0, lCurrentRowNr++, 1, RandallPanel.HORIZONTAL);
-        
+
         iWeaponFilterList = new ArrayList();
         ArrayList lWeaponFilterList = D2WeaponTypes.getWeaponTypeList();
         for ( int i = 0 ; i < lWeaponFilterList.size() ; i++ )
@@ -958,7 +959,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 lCategoriesWeapon.addToPanel(lCurrentRow, 0, lCurrentRowNr++, 1, RandallPanel.HORIZONTAL);
             }
         }
-        
+
         return lCategoriesWeapon;
     }
 
@@ -966,7 +967,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         ButtonGroup lCatSocketBtnGroup = new ButtonGroup();
         RandallPanel lCategoriesSocket = new RandallPanel(true);
-        
+
         iCatSocketJewel = new JRadioButton("Jewel");
         iCatSocketJewel.setForeground(Color.BLUE);
         iCatSocketJewel.addActionListener(iStashFilter);
@@ -978,20 +979,20 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iCatSocketGem.addActionListener(iStashFilter);
         lCategoriesSocket.addToPanel(iCatSocketGem, 1, 0, 1, RandallPanel.HORIZONTAL);
         lCatSocketBtnGroup.add(iCatSocketGem);
-        
+
         iCatSocketRune = new JRadioButton("Rune");
         iCatSocketRune.setForeground(Color.BLUE);
         iCatSocketRune.addActionListener(iStashFilter);
         lCategoriesSocket.addToPanel(iCatSocketRune, 2, 0, 1, RandallPanel.HORIZONTAL);
         lCatSocketBtnGroup.add(iCatSocketRune);
-        
+
         iCatSocketAll = new JRadioButton("All");
         iCatSocketAll.addActionListener(iStashFilter);
         lCategoriesSocket.addToPanel(iCatSocketAll, 3, 0, 1, RandallPanel.HORIZONTAL);
         lCatSocketBtnGroup.add(iCatSocketAll);
-        
+
         iCatSocketAll.setSelected(true);
-        
+
         return lCategoriesSocket;
     }
 
@@ -999,7 +1000,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         ButtonGroup lCatCharmBtnGroup = new ButtonGroup();
         RandallPanel lCategoriesCharm = new RandallPanel(true);
-        
+
         iCatCharmSmall = new JRadioButton("Small");
         iCatCharmSmall.setForeground(Color.BLUE);
         iCatCharmSmall.addActionListener(iStashFilter);
@@ -1011,20 +1012,20 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iCatCharmLarge.addActionListener(iStashFilter);
         lCategoriesCharm.addToPanel(iCatCharmLarge, 1, 0, 1, RandallPanel.HORIZONTAL);
         lCatCharmBtnGroup.add(iCatCharmLarge);
-        
+
         iCatCharmGrand = new JRadioButton("Grand");
         iCatCharmGrand.setForeground(Color.BLUE);
         iCatCharmGrand.addActionListener(iStashFilter);
         lCategoriesCharm.addToPanel(iCatCharmGrand, 2, 0, 1, RandallPanel.HORIZONTAL);
         lCatCharmBtnGroup.add(iCatCharmGrand);
-        
+
         iCatCharmAll = new JRadioButton("All");
         iCatCharmAll.addActionListener(iStashFilter);
         lCategoriesCharm.addToPanel(iCatCharmAll, 3, 0, 1, RandallPanel.HORIZONTAL);
         lCatCharmBtnGroup.add(iCatCharmAll);
-        
+
         iCatCharmAll.setSelected(true);
-        
+
         return lCategoriesCharm;
     }
 
@@ -1032,42 +1033,53 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         ButtonGroup lCatMiscBtnGroup = new ButtonGroup();
         RandallPanel lCategoriesMisc = new RandallPanel(true);
-        
+
+	// amulet
         iCatMiscAmulet = new JRadioButton("Amulet");
         iCatMiscAmulet.setForeground(Color.BLUE);
         iCatMiscAmulet.addActionListener(iStashFilter);
         lCategoriesMisc.addToPanel(iCatMiscAmulet, 0, 0, 1, RandallPanel.HORIZONTAL);
         lCatMiscBtnGroup.add(iCatMiscAmulet);
 
+	// ring
         iCatMiscRing = new JRadioButton("Ring");
         iCatMiscRing.setForeground(Color.BLUE);
         iCatMiscRing.addActionListener(iStashFilter);
         lCategoriesMisc.addToPanel(iCatMiscRing, 1, 0, 1, RandallPanel.HORIZONTAL);
         lCatMiscBtnGroup.add(iCatMiscRing);
-        
+
+	// essence
+	iCatMiscEssence = new JRadioButton("Essence");
+	iCatMiscEssence.setForeground(Color.BLUE);
+	iCatMiscEssence.addActionListener(iStashFilter);
+	lCategoriesMisc.addToPanel(iCatMiscEssence, 2, 0, 1, RandallPanel.HORIZONTAL);
+	lCatMiscBtnGroup.add(iCatMiscEssence);
+
+	// other
         iCatMiscOther = new JRadioButton("Other");
         iCatMiscOther.setForeground(Color.BLUE);
         iCatMiscOther.addActionListener(iStashFilter);
-        lCategoriesMisc.addToPanel(iCatMiscOther, 2, 0, 1, RandallPanel.HORIZONTAL);
+        lCategoriesMisc.addToPanel(iCatMiscOther, 3, 0, 1, RandallPanel.HORIZONTAL);
         lCatMiscBtnGroup.add(iCatMiscOther);
-        
+
+	// all
         iCatMiscAll = new JRadioButton("All");
         iCatMiscAll.addActionListener(iStashFilter);
-        lCategoriesMisc.addToPanel(iCatMiscAll, 3, 0, 1, RandallPanel.HORIZONTAL);
+        lCategoriesMisc.addToPanel(iCatMiscAll, 4, 0, 1, RandallPanel.HORIZONTAL);
         lCatMiscBtnGroup.add(iCatMiscAll);
-        
+
         iCatMiscAll.setSelected(true);
-        
+
         return lCategoriesMisc;
     }
-    
+
     private RandallPanel getCategoriesSock()
     {
 //        ButtonGroup lCatMiscBtnGroup = new ButtonGroup();
         RandallPanel lCategoriesSock = new RandallPanel(true);
-        
-       
-        
+
+
+
         iCatSock1 = new JCheckBox("1 Sock");
         iCatSock1.setForeground(Color.GREEN.darker().darker());
         iCatSock1.addActionListener(iStashFilter);
@@ -1079,36 +1091,36 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iCatSock2.addActionListener(iStashFilter);
         lCategoriesSock.addToPanel(iCatSock2, 1, 0, 1, RandallPanel.HORIZONTAL);
 //        lCatMiscBtnGroup.add(iCatSock2);
-        
+
         iCatSock3 = new JCheckBox("3 Sock");
         iCatSock3.setForeground(Color.GREEN.darker().darker());
         iCatSock3.addActionListener(iStashFilter);
         lCategoriesSock.addToPanel(iCatSock3, 2, 0, 1, RandallPanel.HORIZONTAL);
 //        lCatMiscBtnGroup.add(iCatSock3);
-        
+
         iCatSock4 = new JCheckBox("4 Sock");
         iCatSock4.setForeground(Color.GREEN.darker().darker());
         iCatSock4.addActionListener(iStashFilter);
         lCategoriesSock.addToPanel(iCatSock4, 3, 0, 1, RandallPanel.HORIZONTAL);
 //        lCatMiscBtnGroup.add(iCatSock4);
-        
+
         iCatSock5 = new JCheckBox("5 Sock");
         iCatSock5.setForeground(Color.GREEN.darker().darker());
         iCatSock5.addActionListener(iStashFilter);
         lCategoriesSock.addToPanel(iCatSock5, 4, 0, 1, RandallPanel.HORIZONTAL);
 //        lCatMiscBtnGroup.add(iCatSock5);
-        
+
         iCatSock6 = new JCheckBox("6 Sock");
         iCatSock6.setForeground(Color.GREEN.darker().darker());
         iCatSock6.addActionListener(iStashFilter);
         lCategoriesSock.addToPanel(iCatSock6, 5, 0, 1, RandallPanel.HORIZONTAL);
 //        lCatMiscBtnGroup.add(iCatSock6);
-        
+
         iCatSockAll = new JCheckBox("All");
         iCatSockAll.addActionListener(iStashFilter);
         lCategoriesSock.addToPanel(iCatSockAll, 6, 0, 1, RandallPanel.HORIZONTAL);
 //        lCatMiscBtnGroup.add(iCatSockAll);
-        
+
         iCatSockAll.setSelected(true);
         return lCategoriesSock;
     }
@@ -1154,21 +1166,21 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 		private int filterVal = -1337;
 		private boolean filterOn = false;
 		private boolean filterMin = true;
-        
+
         public D2ItemModel()
         {
 //            iStash = pStash;
             iSortList.add(HEADER[0]);
             refreshData();
         }
-        
+
         public void sortCol(int pHeaderCol)
         {
             iSortList.remove(HEADER[pHeaderCol]);
             iSortList.add(0, HEADER[pHeaderCol]);
             sort();
         }
-        
+
         public int getInteger(JTextField pTextfield)
         {
             String lText = pTextfield.getText();
@@ -1203,7 +1215,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 lMaxReqStr = getInteger(iReqMaxStr);
                 lMaxReqDex = getInteger(iReqMaxDex);
             }
-                
+
             iItems = new ArrayList();
             if ( iStash != null )
             {
@@ -1211,10 +1223,10 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	            for (int i = 0; i < lList.size(); i++)
 	            {
 	                D2Item lItem = (D2Item) lList.get(i);
-	                
+
 	                boolean lAdd1 = false;
 	                boolean lAdd2 = false;
-	                
+
 	                if (iTypeUnique == null)
 	                {
 	                    // initializing, all filters to default
@@ -1274,46 +1286,46 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	                    {
 	                        lAdd1 = true;
 	                    }
-	                    
 
-	                    
-	                
+
+
+
 	                    if(lItem.getItemQuality().equals("normal")){
-	                    	
+
                     		if(!iQualNorm.isSelected() && !iQualAll.isSelected()){
                     			lAdd1 = false;
                     		}
-	                    	
+
 	                    }else if(lItem.getItemQuality().equals("exceptional")){
-	                    	
+
                     		if(!iQualExce.isSelected() && !iQualAll.isSelected()){
                     			lAdd1 = false;
                     		}
-	                    	
+
 	                    }else if(lItem.getItemQuality().equals("elite")){
-	                    	
-	                    	
+
+
                     		if(!iQualEli.isSelected() && !iQualAll.isSelected()){
                     			lAdd1 = false;
                     		}
-	                    	
+
 	                    }else if(lItem.getItemQuality().equals("none")){
-	                    	
-	                    	
+
+
                     		if(!iQualOther.isSelected() && !iQualAll.isSelected()){
                     			lAdd1 = false;
                     		}
-	                    	
+
 	                    }
-	                    
+
 	                    if(!lItem.isEthereal()){
 	                    	if(iQualEth.isSelected()){
 	                    		lAdd1 = false;
 	                    	}
 	                    }
-	                    
-	                    
-	                    
+
+
+
 //	                    if(iQualNorm.isSelected()){
 //	                    	if(!lItem.getItemQuality().equals("normal")){
 //	                    		lAdd1 = false;
@@ -1334,11 +1346,11 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 //	                    		lAdd1 = false;
 //	                    	}
 //	                    }
-	                    
+
 	                    if(iTypeSocketed.isSelected()){
-	                    	
+
 	                    	switch((int)lItem.getSocketNrTotal()){
-	                    	
+
 	                    	case 0:
 	                    		lAdd1 = false;
 	                    		break;
@@ -1372,12 +1384,12 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	                    			lAdd1 = false;
 	                    		}
 	                    		break;
-	                    	
+
 	                    	}
-	                    	
-	                    	
+
+
 	                    }
-	
+
 	                    if (lAdd1)
 	                    {
 	                        if (iCatAll.isSelected())
@@ -1391,7 +1403,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	                            {
 	                                lAdd2 = true;
 	                            }
-	                            
+
 	                            for ( int j = 0 ; j < iArmorFilterList.size() - 1 ; j++ )
 	                            {
 	                                D2RadioButton lBtn = (D2RadioButton) iArmorFilterList.get(j);
@@ -1409,7 +1421,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	                            {
 	                                lAdd2 = true;
 	                            }
-	                            
+
 	                            for ( int j = 0 ; j < iWeaponFilterList.size() - 1 ; j++ )
 	                            {
 	                                D2RadioButton lBtn = (D2RadioButton) iWeaponFilterList.get(j);
@@ -1481,17 +1493,17 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	                        }
 	                    }
 	                }
-	
+
 	                if ( lAdd1 && lAdd2 )
-	                {	                	
+	                {
 						if(filterOn){
-	                	
+
 							if(!lItem.conforms(filterString, filterVal, filterMin )){
 								lAdd1 = false;
 							}
-							
+
 	                	}
-	                	
+
 	                    if ( lMaxReqLvl != -1 )
 	                    {
 	                        if ( lItem.getReqLvl() > lMaxReqLvl )
@@ -1513,7 +1525,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
 	                            lAdd1 = false;
 	                        }
 	                    }
-	                    
+
 	                    if ( lAdd1 )
 	                    {
 	                        iItems.add(lItem);
@@ -1523,7 +1535,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             }
             sort();
         }
-        
+
         public void sort()
         {
             Collections.sort(iItems, new Comparator()
@@ -1532,11 +1544,11 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 {
                     D2Item lItem1 = (D2Item) pObj1;
                     D2Item lItem2 = (D2Item) pObj2;
-                    
+
                     for ( int i = 0 ; i < iSortList.size() ; i++ )
                     {
                         Object lSort = iSortList.get(i);
-                        
+
                         if ( lSort ==  HEADER[0] )
                         {
                             return lItem1.getName().compareTo(lItem2.getName());
@@ -1544,23 +1556,23 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                         else if ( lSort ==  HEADER[1] )
                         {
                             return lItem1.getReqLvl() - lItem2.getReqLvl();
-                        } 
+                        }
                         else if ( lSort ==  HEADER[2] )
                         {
                             return lItem1.getReqStr() - lItem2.getReqStr();
-                        } 
+                        }
                         else if ( lSort ==  HEADER[3] )
                         {
                             return lItem1.getReqDex() - lItem2.getReqDex();
-                        } 
+                        }
                         else if ( lSort ==  HEADER[4] )
                         {
                             String lFileName1 = ((D2ItemListAll) iStash).getFilename(lItem1);
                             String lFileName2 = ((D2ItemListAll) iStash).getFilename(lItem2);
                             return lFileName1.compareTo(lFileName2);
-                        } 
+                        }
                     }
-                    
+
                     return 0;
                 }
             });
@@ -1615,7 +1627,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         {
             D2Item lItem = (D2Item) iItems.get(pRow);
             switch (pCol)
-            {            
+            {
             case 0:
                 return new D2CellValue( lItem.getItemName(), lItem, iFileManager.getProject());
             case 1:
@@ -1632,7 +1644,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
                 return "";
             }
         }
-        
+
         private String getStringValue(int pValue)
         {
             if ( pValue == -1 )
@@ -1677,114 +1689,90 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         public void actionPerformed(ActionEvent pEvent)
         {
-        	
-        	if((iCatSockAll.isSelected() && iCatSock1.isSelected()) || (iCatSockAll.isSelected() && iCatSock2.isSelected()) || (iCatSockAll.isSelected() && iCatSock3.isSelected()) || (iCatSockAll.isSelected() && iCatSock4.isSelected()) || (iCatSockAll.isSelected() && iCatSock5.isSelected()) || (iCatSockAll.isSelected() && iCatSock6.isSelected())){
-        		iCatSockAll.setSelected(false);
-        	}
-        	
-        	if(pEvent.getSource().equals(iCatSockAll)){
-        		if(!iCatSockAll.isSelected()){
-        			iCatSockAll.setSelected(true);
-        			iCatSock1.setSelected(false);
-        			iCatSock2.setSelected(false);
-        			iCatSock3.setSelected(false);
-        			iCatSock4.setSelected(false);
-        			iCatSock5.setSelected(false);
-        			iCatSock6.setSelected(false);
-        			
-        		}
-        	}
-        	
-        	
-        	if((iQualAll.isSelected() && iQualNorm.isSelected()) || (iQualAll.isSelected() && iQualExce.isSelected()) || (iQualAll.isSelected() && iQualEli.isSelected())|| (iQualAll.isSelected() && iQualOther.isSelected())){
-        		iQualAll.setSelected(false);
-        	}
-        	
-        	if(pEvent.getSource().equals(iQualAll)){
-        		if(!iQualAll.isSelected()){
-        			iQualAll.setSelected(true);
-        			iQualNorm.setSelected(false);
-        			iQualExce.setSelected(false);
-        			iQualOther.setSelected(false);
-        			iQualEli.setSelected(false);
-        			iQualEth.setSelected(false);
-        			
-        			
-        		}
-        	}
-        	
-        	
-            // change layout according to filters
-            if ( iCatArmor.isSelected() )
-            {
-            	iCatArmor.setForeground(Color.red);
-                iArmorFilter.setVisible(true);
-            }
-            else
-            {
-            	iCatArmor.setForeground(Color.black);
-                iArmorFilter.setVisible(false);
-            }
-            
-            if ( iCatWeapons.isSelected() )
-            {
-            	iCatWeapons.setForeground(Color.red);
-                iWeaponFilter.setVisible(true);
-            }
-            else
-            {
-            	iCatWeapons.setForeground(Color.black);
-                iWeaponFilter.setVisible(false);
-            }
-            
-            if ( iCatSocket.isSelected() )
-            {
-            	iCatSocket.setForeground(Color.red);
-                iSocketFilter.setVisible(true);
-            }
-            else
-            {
-            	iCatSocket.setForeground(Color.black);
-                iSocketFilter.setVisible(false);
-            }
+	    updateGUI(pEvent);
 
-            if ( iCatCharm.isSelected() )
-            {
-            	iCatCharm.setForeground(Color.red);
-                iCharmFilter.setVisible(true);
-            }
-            else
-            {
-            	iCatCharm.setForeground(Color.black);
-                iCharmFilter.setVisible(false);
-            }
-
-            if ( iCatMisc.isSelected() )
-            {
-            	iCatMisc.setForeground(Color.red);
-                iMiscFilter.setVisible(true);
-            }
-            else
-            {
-            	iCatMisc.setForeground(Color.black);
-                iMiscFilter.setVisible(false);
-            }
-            if ( iTypeSocketed.isSelected() )
-            {
-            	iTypeSocketed.setForeground(Color.red);
-                iSockFilter.setVisible(true);
-            }
-            else
-            {
-            	iTypeSocketed.setForeground(Color.black);
-            	iSockFilter.setVisible(false);
-            }
-            
-
-            // activate filters
+	    // apply filter
+	    // TODO this name is misleading. should use a better method name.
             itemListChanged();
         }
-        
+
+	/**
+	 * some GUI radio/checkbox grouping logic
+	 */
+	private void updateGUI(ActionEvent pEvent)
+	{
+	    /*
+	     * socketed filter
+	     */
+	    // deselect "All" if one of the number sock is selected.
+	    if (iCatSockAll.isSelected()) {
+		if (iCatSock1.isSelected() || iCatSock2.isSelected() ||
+		    iCatSock3.isSelected() || iCatSock4.isSelected() ||
+		    iCatSock5.isSelected() || iCatSock6.isSelected()) {
+		    iCatSockAll.setSelected(false);
+		}
+	    }
+	    // deselect all number sock, when user select "All"
+	    if (pEvent.getSource().equals(iCatSockAll)) {
+		if(! iCatSockAll.isSelected()){
+		    iCatSockAll.setSelected(true);
+		    iCatSock1.setSelected(false);
+		    iCatSock2.setSelected(false);
+		    iCatSock3.setSelected(false);
+		    iCatSock4.setSelected(false);
+		    iCatSock5.setSelected(false);
+		    iCatSock6.setSelected(false);
+		}
+	    }
+
+	    /*
+	     * quality filter (first row in GUI)
+	     */
+	    // deselect "All" when one of the quality is selected.
+	    if (iQualAll.isSelected()) {
+		if (iQualNorm.isSelected() ||
+		    iQualExce.isSelected() ||
+		    iQualEli.isSelected() ||
+		    iQualOther.isSelected()) {
+		    iQualAll.setSelected(false);
+		}
+	    }
+	    // deselect all qualities when "All" is selected.
+	    if (pEvent.getSource().equals(iQualAll)) {
+		if (! iQualAll.isSelected()){
+		    iQualAll.setSelected(true);
+		    iQualNorm.setSelected(false);
+		    iQualExce.setSelected(false);
+		    iQualEli.setSelected(false);
+		    iQualOther.setSelected(false);
+		}
+	    }
+	    // select "All" when none of other quality is selected.
+	    if (! (iQualNorm.isSelected() ||
+		   iQualExce.isSelected() ||
+		   iQualEli.isSelected() ||
+		   iQualOther.isSelected())) {
+		iQualAll.setSelected(true);
+	    }
+
+	    /*
+	     * item types filter.
+	     *
+	     * when a item type filter is selected, highlight that filter's
+	     * label and show the sub filter.
+	     *
+	     * edit: highlight part was removed. it doesn't add functionality
+	     * and red color only brings anxious.
+	     */
+	    iArmorFilter.setVisible(iCatArmor.isSelected());
+	    // iCatArmor.setForeground(iCatArmor.isSelected() ? Color.red : Color.black);
+	    iWeaponFilter.setVisible(iCatWeapons.isSelected());
+	    iSocketFilter.setVisible(iCatSocket.isSelected());
+	    iCharmFilter.setVisible(iCatCharm.isSelected());
+	    iMiscFilter.setVisible(iCatMisc.isSelected());
+	    iSockFilter.setVisible(iTypeSocketed.isSelected());
+	}
+
         public void insertUpdate(DocumentEvent e)
         {
             // activate filters
@@ -1802,7 +1790,7 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
             // activate filters
             itemListChanged();
         }
-        
+
     }
 
     public String getFileName()
@@ -1819,11 +1807,11 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         return iStash;
     }
-    
+
     public void closeView()
     {
         disconnect(null);
-        
+
         iFileManager.removeFromOpenWindows(this);
     }
 
@@ -1838,14 +1826,18 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iStash = pStash;
         itemListChanged();
     }
-    
+
     public D2ItemList getStash(){
     	return iStash;
     }
-    
+
     public String getStashName(){
     	return iStashName;
     }
 
-    
+
 }
+
+// Local Variables:
+// c-basic-offset: 4
+// End:

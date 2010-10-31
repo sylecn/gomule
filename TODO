@@ -2,12 +2,6 @@
 
 gomule bugs and feature request
 * 
-* DONE feature: mule MAX gold to char
-  add a button in "Transfer" section:
-  [to char] MAX Gold [from char]
-
-  click [to char] will fill char with max possible gold.
-  click [from char] will deposite all Gold in char to gomule bank.
 * refine GUI for stashes
 
   TODO what does the two "Other" mean in current GUI?
@@ -23,7 +17,14 @@ gomule bugs and feature request
   Knife -> Daggers
   Hand to Hand -> Assassin Katars
   put class specific type at last, group them together.
+** DONE if none of the quality is selected, auto-select "All".		:bug:
+** DONE fix the eth thing. it doesn't belong to quality filter.
+** move eth to the end of that line in GUI.
 * feature: add essense in "Misc" section
+* feature request: close all window (auto-save)			       :easy:
+  Add a "Close All Window" button on toolbar.
+
+  just like click on menu Project->Preferences then close.
 * feature: auto grab and sort for common items. 		:low:feature:
   detect common items from current character, grab them and place them into
   pre-defined stashes.
@@ -73,7 +74,7 @@ gomule bugs and feature request
   GoMule should gray out the cube section, if the user still try to move item
   there, display a message tell the user there is no cube on the char, so the
   move is not possible.
-* resistance calculation is wrong.					:bug:
+* resistance calculation is wrong.				    :bug:low:
   I notice resistance in game is way different from what's shown in gomule.
   even 50% differ.
 
@@ -82,19 +83,12 @@ gomule bugs and feature request
 
   edit: when you close and reload a char, the resistances are right, but after
   you mule some items in and out, the resistances are wrong.
-
-* DONE MAX gold in Stash should be at 2,500,000 from lv 1	   :bug:easy:
-  when transfer money using the gomule bank.
-
-  I have a lv 55 necromancer, has max gold, and can't deposite in gomule bank
-  because gomule doesn't want max gold to be more than 1,400,000 at that
-  level.
-* DONE gomule should preserve Skill Tab				:bug:wontfix:
+* gomule should preserve Skill Tab			:bug:needs_more_info:
   currently after muling in gomule and go to game, press T, you will always at
   the 3rd tab.
   skill tree tab should be what the user choose when they left game last time.
 ** I can't reproduce it now on a necromancer.
-* DONE gomule should keep oskill on switch weapon		:bug:wontfix:
+* gomule should keep oskill on switch weapon		:bug:needs_more_info:
 ** how to reproduce the problem?
    a sorc has a lower resist wand on 2nd weapon slot, and lower resist skill
    on right click.
@@ -115,13 +109,9 @@ gomule bugs and feature request
     quit game.
     mule in gomule.
     open char in game. still Amp & tele on RMB skill. no problem.
-* feature request: close all window (auto-save)			       :easy:
-  Add a "Close All Window" button on toolbar.
-
-  just like click on menu Project->Preferences then close.
 * feature request: allow ordering of stashes/chars
   the default is sort by alphabetic, while the user may not want that.
-* feature request: support multiple level of directories
+* feature request: support tree structure for organizing stashes.
   so I can have:
   Project: GoMule
   D2
@@ -131,22 +121,44 @@ gomule bugs and feature request
       suspend
       dead
   stashes
-      Charms
-	  Life
-	  Life_Mana
-	  AR
-	  AR_DAM
-	  Resistance
-      Gems
-	  chipped
-	  todo
-	  Perfect
-      Class
-	  ama
-	  sor
-	  dru
-	  nec
-	  asn
-	  bar
-	  pal
+      begin        //top level stashes
+      main
+      godly
+      twink
+      temp
+      bad_unique
+      tc84+
+
+      class_specific
+      merc
+
+      caster
+      melee
+      [+]utils        //stash directory
+          utils        //child stash inside a stash directory
+          MF
+	  GF
+          IG
+      [+]todo
+          gems
+	  roll_skillers
+	  upgrade_me
+	  hydra_bow_before_wf
+
+  It's like organizing ftp hosts in Filezilla.
+  you can add a ftp host on top level dir, you can also create directories and
+  add ftp host in the directory.
 ** the tree status(expand/collapse) will be preserved between gomule sessions.
+* DONE feature: mule MAX gold to char
+  add a button in "Transfer" section:
+  [to char] MAX Gold [from char]
+
+  click [to char] will fill char with max possible gold.
+  click [from char] will deposite all Gold in char to gomule bank.
+
+* DONE MAX gold in Stash should be at 2,500,000 from lv 1	   :bug:easy:
+  when transfer money using the gomule bank.
+
+  I have a lv 55 necromancer, has max gold, and can't deposite in gomule bank
+  because gomule doesn't want max gold to be more than 1,400,000 at that
+  level.
