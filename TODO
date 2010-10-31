@@ -2,6 +2,28 @@
 
 gomule bugs and feature request
 * 
+* feature: mule MAX gold to char
+  add a button in "Transfer" section:
+  [to char] MAX Gold [from char]
+
+  click [to char] will fill char with max possible gold.
+  click [from char] will deposite all Gold in char to gomule bank.
+* refine GUI for stashes
+
+  TODO what does the two "Other" mean in current GUI?
+
+  group:
+  class: []Normal []Exceptional []Elite []Other []All
+  feature: if none of normal, exceptional, elite, other is selected, auto select All.
+  eth: [] Ethereal
+  quality: []Uniq []Set []Runeword []Rare []Magic []Craft
+  socketed: []1 sock []2 sock ... []All
+  weapon sub section should sort with dictionary order.
+  change weapon types according to the AS:
+  Knife -> Daggers
+  Hand to Hand -> Assassin Katars
+  put class specific type at last, group them together.
+* feature: add essense in "Misc" section
 * feature: auto grab and sort for common items. 		:low:feature:
   detect common items from current character, grab them and place them into
   pre-defined stashes.
@@ -57,6 +79,9 @@ gomule bugs and feature request
 
   edit: sometimes it is wrong. not sure when.
   the base code really need a review.
+
+  edit: when you close and reload a char, the resistances are right, but after
+  you mule some items in and out, the resistances are wrong.
 
 * DONE MAX gold in Stash should be at 2,500,000 from lv 1	   :bug:easy:
   when transfer money using the gomule bank.
