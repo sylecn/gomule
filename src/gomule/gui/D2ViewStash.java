@@ -791,10 +791,6 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
     {
         RandallPanel lQualPanel = new RandallPanel(true);
 
-
-
-
-
         iQualNorm = new JCheckBox("Normal");
         iQualNorm.addActionListener(iStashFilter);
         lQualPanel.addToPanel(iQualNorm, 0, 0, 1, RandallPanel.HORIZONTAL);
@@ -804,17 +800,18 @@ public class D2ViewStash extends JInternalFrame implements D2ItemContainer, D2It
         iQualEli = new JCheckBox("Elite");
         iQualEli.addActionListener(iStashFilter);
         lQualPanel.addToPanel(iQualEli, 2, 0, 1, RandallPanel.HORIZONTAL);
-        iQualEth = new JCheckBox("Ethereal");
-        iQualEth.addActionListener(iStashFilter);
-        lQualPanel.addToPanel(iQualEth, 3, 0, 1, RandallPanel.HORIZONTAL);
         iQualOther = new JCheckBox("Other");
         iQualOther.addActionListener(iStashFilter);
-        lQualPanel.addToPanel(iQualOther, 4, 0, 1, RandallPanel.HORIZONTAL);
+        lQualPanel.addToPanel(iQualOther, 3, 0, 1, RandallPanel.HORIZONTAL);
         iQualAll = new JCheckBox("All");
         iQualAll.addActionListener(iStashFilter);
-        lQualPanel.addToPanel(iQualAll, 5, 0, 1, RandallPanel.HORIZONTAL);
+        lQualPanel.addToPanel(iQualAll, 4, 0, 1, RandallPanel.HORIZONTAL);
 
         iQualAll.setSelected(true);
+
+        iQualEth = new JCheckBox("Ethereal");
+        iQualEth.addActionListener(iStashFilter);
+        lQualPanel.addToPanel(iQualEth, 5, 0, 1, RandallPanel.HORIZONTAL);
 
         return lQualPanel;
     }

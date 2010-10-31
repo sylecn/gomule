@@ -2,29 +2,14 @@
 
 gomule bugs and feature request
 * 
-* refine GUI for stashes
-
-  TODO what does the two "Other" mean in current GUI?
-
-  group:
-  class: []Normal []Exceptional []Elite []Other []All
-  feature: if none of normal, exceptional, elite, other is selected, auto select All.
-  eth: [] Ethereal
-  quality: []Uniq []Set []Runeword []Rare []Magic []Craft
-  socketed: []1 sock []2 sock ... []All
-  weapon sub section should sort with dictionary order.
-  change weapon types according to the AS:
-  Knife -> Daggers
-  Hand to Hand -> Assassin Katars
-  put class specific type at last, group them together.
-** DONE if none of the quality is selected, auto-select "All".		:bug:
-** DONE fix the eth thing. it doesn't belong to quality filter.
-** move eth to the end of that line in GUI.
-* feature: add essense in "Misc" section
 * feature request: close all window (auto-save)			       :easy:
   Add a "Close All Window" button on toolbar.
 
   just like click on menu Project->Preferences then close.
+* feature: add paldin shield, necromancer head in armor type? 		:low:
+  since there is amazon bow in weapon filter, should be able to make a paldin
+  shield in armor filter.
+* feature: add essense in "Misc" section
 * feature: auto grab and sort for common items. 		:low:feature:
   detect common items from current character, grab them and place them into
   pre-defined stashes.
@@ -149,6 +134,42 @@ gomule bugs and feature request
   you can add a ftp host on top level dir, you can also create directories and
   add ftp host in the directory.
 ** the tree status(expand/collapse) will be preserved between gomule sessions.
+* DONE refine GUI for stashes
+  group:
+  class: []Normal []Exceptional []Elite []Other []All
+  feature: if none of normal, exceptional, elite, other is selected, auto select All.
+  eth: [] Ethereal
+  quality: []Uniq []Set []Runeword []Rare []Magic []Craft
+  socketed: []1 sock []2 sock ... []All
+  weapon sub section should sort with dictionary order.
+  //edit: I don't think so now. see below
+  put class specific type at last, group them together.
+** DONE if none of the quality is selected, auto-select "All".		:bug:
+** DONE fix the eth thing. it doesn't belong to quality filter.
+** DONE move eth to the end of that line in GUI.
+** rename some weapon type according to the AS			:suspend:low:
+   Knife -> Dagger
+   hand to hand -> Assassin Katar
+** layout/order of weapon filter				:suspend:low:
+   current weapon types layout:
+   sword scepter mace club hammer axe
+   wand staff orb spear polearm amazon spear
+   bow crossbow [amazon bow] javelin [amazon javelin]
+   [knife -> dagger] [hand to hand -> Assassin Katars] [throwing axe] [throwing knife] all
+
+   new layout:
+   ()axe ()sword
+   () mace () club () hammer ()scepter
+   () spear () amazon spear () polearm
+   ()bow ()amazon bow ()crossbow
+   () Orb () staff () wand ()dagger ()Assassin Katars
+   throwing: () axe () knife  () javelin () amazon javelin
+
+   after some time of thinking, I'm not sure which layout is better.
+   will leave it as it is.
+
+   edit: I like my DQL better than GUI. using DQL, use just type what they
+   want, no more hassle.
 * DONE feature: mule MAX gold to char
   add a button in "Transfer" section:
   [to char] MAX Gold [from char]
