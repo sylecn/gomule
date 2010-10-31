@@ -55,7 +55,7 @@ public class D2FileManager extends JFrame
 	 */
 	private static final long serialVersionUID = 4010435064410504579L;
 
-	private static final String  CURRENT_VERSION = "R0.3: Donkey";
+	private static final String  CURRENT_VERSION = "3.1.2";
 
 	private HashMap				 iItemLists = new HashMap();
 	private ArrayList            iOpenWindows;

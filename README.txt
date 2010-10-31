@@ -2,7 +2,7 @@ The GoMule Project
 ==================
 
 Date: 2010-09-16
-Time-stamp: <2010-10-05>
+Time-stamp: <2010-10-31>
 
 What is GoMule?
 ---------------
@@ -29,9 +29,21 @@ About this fork
 I want to add some new features to GoMule, so I forked it.
 
 What's changed in this fork:
-* 
-* Max Gold in Stash is capped at 2500000 for all levels. [1.13c]
-* version control system changed to Git
+*
+* 2010-10-31 release 3.1.2
+  new features:
+      allow transfer max gold to/from character
+      add menu item: "Save&Close All"
+      add shortcuts for some menu items.
+      	  Ctrl-S     save all.
+	  Ctrl-V     save&close all.
+	  Ctrl-Q     quit.
+  bug fixes:
+      if none of the qualities is selected, auto select "All"
+      moved "Ethereal" to end of that line in GUI
+* 2010-10-05 release 3.1.1
+  Max Gold in Stash is capped at 2500000 for all levels. [1.13c]
+* 2010-10-05 version control system changed to Git
   CVS files removed.
   added dependent lirary: ws-xmlrpc
   added 'ant release' target, pdf manual is included in release.
@@ -49,15 +61,10 @@ page](http://sourceforge.net/projects/gomule/)
 Start using GoMule
 ------------------
 
-You need [JRE (Java Runtime
-Environment)](http://www.java.com/en/download/manual.jsp) Version 6 or higher
-to run my patched version of GoMule.
+Install [JRE (Java Runtime Environment)](http://www.java.com/en/download/manual.jsp) Version 5 or higher.
 
-The original version also requires JRE, I don't know the minimum version.
-
-When JRE is installed, unzip the download file and double click GoMule.jar to
-start the application. You may want to read the UserGuide.pdf to know how to
-use it effectively.
+Unzip the downloaded file and double click GoMule.jar to start the GoMule. You
+may want to read the UserGuide.pdf to know how to use it effectively.
 
 In order to read the manual, you need [Acrobat Reader](http://get.adobe.com/reader/) or equivalent.
 
@@ -71,9 +78,9 @@ This is what the old README file says:
 > do not use this program without backup your D2 characters !!!
 
 I find GoMule very stable for everyday use. GoMule backup your saves and stash
-file every day/week/month. I recommend off-disk backup for D2 saves and GoMule
-stashes in case you get a disk failure. Either an online net disk or a local
-USB drive is fine.
+file every day/week/month, which you can choose from project settings. I
+recommend off-disk backup for D2 saves and GoMule stashes in case you get a
+disk failure. Either an online storage or a local USB drive is fine.
 
 History
 -------
@@ -95,5 +102,3 @@ Authors
 -------
 
 Program by Randall, Silospen
-Patch by Yuanle Song
-
