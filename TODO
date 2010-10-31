@@ -2,14 +2,50 @@
 
 gomule bugs and feature request
 * 
-* feature request: close all window (auto-save)			       :easy:
-  Add a "Close All Window" button on toolbar.
+* feature: add essense in "Misc" section			   :easy:low:
+* feature request: support tree structure for organizing stashes.
+  so I can have:
+  Project: GoMule
+  D2
+  characters
+      current
+	  SHERO
+      suspend
+      dead
+  stashes
+      begin        //top level stashes
+      main
+      godly
+      twink
+      temp
+      bad_unique
+      tc84+
 
-  just like click on menu Project->Preferences then close.
+      class_specific
+      merc
+
+      caster
+      melee
+      [+]utils        //stash directory
+          utils        //child stash inside a stash directory
+          MF
+	  GF
+          IG
+      [+]todo
+          gems
+	  roll_skillers
+	  upgrade_me
+	  hydra_bow_before_wf
+
+  It's like organizing ftp hosts in Filezilla.
+  you can add a ftp host on top level dir, you can also create directories and
+  add ftp host in the directory.
+** the tree status(expand/collapse) will be preserved between gomule sessions.
+* feature request: allow ordering of stashes/chars
+  the default is sort by alphabetic, while the user may not want that.
 * feature: add paldin shield, necromancer head in armor type? 		:low:
   since there is amazon bow in weapon filter, should be able to make a paldin
   shield in armor filter.
-* feature: add essense in "Misc" section
 * feature: auto grab and sort for common items. 		:low:feature:
   detect common items from current character, grab them and place them into
   pre-defined stashes.
@@ -59,7 +95,7 @@ gomule bugs and feature request
   GoMule should gray out the cube section, if the user still try to move item
   there, display a message tell the user there is no cube on the char, so the
   move is not possible.
-* resistance calculation is wrong.				    :bug:low:
+* sometimes resistance calculation is wrong. 			    :bug:low:
   I notice resistance in game is way different from what's shown in gomule.
   even 50% differ.
 
@@ -94,46 +130,15 @@ gomule bugs and feature request
     quit game.
     mule in gomule.
     open char in game. still Amp & tele on RMB skill. no problem.
-* feature request: allow ordering of stashes/chars
-  the default is sort by alphabetic, while the user may not want that.
-* feature request: support tree structure for organizing stashes.
-  so I can have:
-  Project: GoMule
-  D2
-  characters
-      current
-	  SHERO
-      suspend
-      dead
-  stashes
-      begin        //top level stashes
-      main
-      godly
-      twink
-      temp
-      bad_unique
-      tc84+
+* DONE feature request: close all window (auto-save)		       :easy:
+  Add a "Close All Window" button on toolbar.
 
-      class_specific
-      merc
+  just like click on menu Project->Preferences then close.
+** add a menu item under "File"
+   Save & Close All
 
-      caster
-      melee
-      [+]utils        //stash directory
-          utils        //child stash inside a stash directory
-          MF
-	  GF
-          IG
-      [+]todo
-          gems
-	  roll_skillers
-	  upgrade_me
-	  hydra_bow_before_wf
-
-  It's like organizing ftp hosts in Filezilla.
-  you can add a ftp host on top level dir, you can also create directories and
-  add ftp host in the directory.
-** the tree status(expand/collapse) will be preserved between gomule sessions.
+   I use menu so I don't need to find icon for buttons.
+** add Mnemonic and Accelerator to Menuitem
 * DONE refine GUI for stashes
   group:
   class: []Normal []Exceptional []Elite []Other []All
