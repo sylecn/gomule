@@ -1,22 +1,22 @@
 /*******************************************************************************
- * 
- * Copyright 2007 Andy Theuninck, Randall & Silospen
- * 
+ *
+ * Copyright 2007, 2010 Andy Theuninck, Randall & Silospen
+ *
  * This file is part of gomule.
- * 
+ *
  * gomule is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * gomule is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * gomlue; if not, write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA 02110-1301 USA
- *  
+ *
  ******************************************************************************/
 package gomule.gui;
 
@@ -34,12 +34,11 @@ import randall.util.*;
 
 /**
  * @author Marco
- *  
- */
-public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2ItemListListener
+ *
+ */ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2ItemListListener
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -7350581523641897831L;
 	private D2CharPainterPanel       iCharPainter;
@@ -104,6 +103,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	private JRadioButton             iConnectGold;
 	private JRadioButton             iConnectGoldBank;
 	private JTextField               iTransferFree;
+	private JTextField               iTransferMax;
 
 	private JButton					 iGoldTransferBtns[];
 	private JTabbedPane lTabs = new JTabbedPane();
@@ -178,8 +178,8 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 				e1.printStackTrace();
 			}finally{
 				if ( fis != null ){
-					try{ 
-						fis.close(); 
+					try{
+						fis.close();
 					}catch( IOException ioe ) {
 						ioe.printStackTrace();
 					}
@@ -391,7 +391,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 		RandallPanel lTransferPanel = new RandallPanel(true);
 		lTransferPanel.setBorder("Transfer");
 
-		iGoldTransferBtns = new JButton[8];
+		iGoldTransferBtns = new JButton[10];
 
 		iGoldTransferBtns[0] = new JButton("to char");
 		iGoldTransferBtns[0].addActionListener(new ActionListener()
@@ -468,6 +468,32 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 			}
 		});
 
+		/*
+		 * transfer Max Gold to/from char, mainly for gambling.
+		 */
+		iGoldTransferBtns[8] = new JButton("to char");
+		iGoldTransferBtns[8].addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				// fill character's stash and wallet.
+				transferMaxGoldToChar();
+			}
+		});
+
+		iTransferMax = new JTextField("Max Gold");
+		iTransferMax.setEditable(false);
+
+		iGoldTransferBtns[9] = new JButton("from char");
+		iGoldTransferBtns[9].addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				// deposite all gold in stash and wallet.
+				depositeAllGoldToBank();
+			}
+		});
+
 		lTransferPanel.addToPanel(iGoldTransferBtns[0], 0, 0, 1, RandallPanel.NONE);
 		lTransferPanel.addToPanel(lField10000, 1, 0, 1, RandallPanel.HORIZONTAL);
 		lTransferPanel.addToPanel(iGoldTransferBtns[1], 2, 0, 1, RandallPanel.NONE);
@@ -483,6 +509,10 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 		lTransferPanel.addToPanel(iGoldTransferBtns[6], 0, 3, 1, RandallPanel.NONE);
 		lTransferPanel.addToPanel(iTransferFree, 1, 3, 1, RandallPanel.HORIZONTAL);
 		lTransferPanel.addToPanel(iGoldTransferBtns[7], 2, 3, 1, RandallPanel.NONE);
+
+		lTransferPanel.addToPanel(iGoldTransferBtns[8], 0, 4, 1, RandallPanel.NONE);
+		lTransferPanel.addToPanel(iTransferMax, 1, 4, 1, RandallPanel.HORIZONTAL);
+		lTransferPanel.addToPanel(iGoldTransferBtns[9], 2, 4, 1, RandallPanel.NONE);
 
 		lBankPanel.addToPanel(lTransferPanel, 0, 10, 3, RandallPanel.HORIZONTAL);
 
@@ -545,7 +575,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 		rightClickItem.add("Cancel");
 
 		item.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {      
+			public void actionPerformed(ActionEvent event) {
 
 				if(event.getActionCommand().equals("Delete?")){
 
@@ -577,7 +607,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 		});
 
 		item2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {      
+			public void actionPerformed(ActionEvent event) {
 
 				if(event.getActionCommand().equals("View Item")){
 					D2ItemPanel lItemPanel = new D2ItemPanel(rightClickEvent, true, false, false);
@@ -614,7 +644,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 		});
 
 		item3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {      
+			public void actionPerformed(ActionEvent event) {
 
 				if(event.getActionCommand().equals("Extended Item Info")){
 //					D2ItemPanel lItemPanel = new D2ItemPanel(rightClickEvent, true, false, false);
@@ -817,6 +847,113 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 
 		itemListChanged();
 //		System.gc();
+	}
+
+	/**
+	 * withdraw gold to char's stash
+	 */
+	private void withdrawToStash(int pGold) {
+		try {
+			assert pGold > 0;
+
+			// TODO how to make this operation a transaction?
+			iCharacter.setGoldBank(iCharacter.getGoldBank() + pGold);
+			iGoldBank.setText(Integer.toString(iCharacter.getGoldBank()));
+			iFileManager.getProject().setBankValue(iFileManager.getProject().getBankValue() - pGold);
+
+			assert iFileManager.getProject().getBankValue() >= 0;
+			assert iCharacter.getGoldBank() < iCharacter.getGoldBankMax();
+		}  catch (Exception pEx) {
+			D2FileManager.displayErrorDialog(pEx);
+		}
+	}
+
+	/**
+	 * withdraw gold to char's wallet
+	 */
+	private void withdrawToWallet(int pGold) {
+		try {
+			assert pGold > 0;
+
+			iCharacter.setGold(iCharacter.getGold() + pGold);
+			iGold.setText(Integer.toString(iCharacter.getGold()));
+			iFileManager.getProject().setBankValue(iFileManager.getProject().getBankValue() - pGold);
+
+			assert iFileManager.getProject().getBankValue() >= 0;
+			assert iCharacter.getGold() < iCharacter.getGoldMax();
+		} catch (Exception pEx) {
+			D2FileManager.displayErrorDialog(pEx);
+		}
+	}
+
+	/**
+	 * transfer max gold to current character. fill the stash and wallet.
+	 *
+	 * Note: not sure about the naming convention used in this code.
+	 * seems instance variables are start with i, local variables start
+	 * with l, parameter variables start with p. I will try to use this
+	 * convention, though it is not my favorate.
+	 */
+	private void transferMaxGoldToChar()
+	{
+		try {
+			int lGoldInBank = iFileManager.getProject().getBankValue();
+			if (lGoldInBank == 0) {
+				// nothing to transfer
+				return;
+			}
+
+			// fill stash
+			int lGoldInStash = iCharacter.getGoldBank();
+			int lStashCapacity = iCharacter.getGoldBankMax();
+			int ldiff = lStashCapacity - lGoldInStash;
+			if (ldiff > 0) {
+				if (ldiff > lGoldInBank) {
+					ldiff = lGoldInBank;
+				}
+				withdrawToStash(ldiff);
+			}
+
+			// fill wallet
+			int lGoldInWallet = iCharacter.getGold();
+			int lWalletCapacity = iCharacter.getGoldMax();
+			ldiff = lWalletCapacity - lGoldInWallet;
+			lGoldInBank = iFileManager.getProject().getBankValue();
+			if (ldiff > 0) {
+				if (ldiff > lGoldInBank) {
+					ldiff = lGoldInBank;
+				}
+				withdrawToWallet(ldiff);
+			}
+		} catch (Exception pEx) {
+			D2FileManager.displayErrorDialog(pEx);
+		}
+	}
+
+	/**
+	 * deposite character's gold in GoMule bank, including gold in stash
+	 * and wallet.
+	 */
+	private void depositeAllGoldToBank() {
+		try {
+			// deposite gold in stash
+			int lGoldInStash = iCharacter.getGoldBank();
+			if (lGoldInStash > 0) {
+				iCharacter.setGoldBank(0);
+				iGoldBank.setText("0");
+				iFileManager.getProject().setBankValue(iFileManager.getProject().getBankValue() + lGoldInStash);
+			}
+
+			// fill wallet
+			int lGoldInWallet = iCharacter.getGold();
+			if (lGoldInWallet > 0) {
+				iCharacter.setGold(0);
+				iGold.setText("0");
+				iFileManager.getProject().setBankValue(iFileManager.getProject().getBankValue() + lGoldInWallet);
+			}
+		} catch (Exception pEx) {
+			D2FileManager.displayErrorDialog(pEx);
+		}
 	}
 
 	public void transferToChar(int pGoldTransfer)
@@ -1276,7 +1413,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2CharPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 2159433491696507246L;
 		private Image iBackground;
@@ -1328,7 +1465,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 								/**Code to remove potions when belt is removed!
 								 * Thanks to Krikke.
 								 */
-								//System.out.println("isEquipped: " + lTemp.isEquipped() + " isABelt: " + lTemp.isABelt()); 
+								//System.out.println("isEquipped: " + lTemp.isEquipped() + " isABelt: " + lTemp.isABelt());
 								if (lTemp.isEquipped() && lTemp.isABelt())
 								{
 									for (int y=0;y<iCharacter.getBeltPotions().size();y++){
@@ -1742,7 +1879,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2MercPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 2412158000132602811L;
 		private Image iBackground;
@@ -2041,7 +2178,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2DeathPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -4532690271347197756L;
 		private Image iBackground;
@@ -2302,7 +2439,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2SkillPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 8956659406243697754L;
 		private Image iBackground;
@@ -2400,7 +2537,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 					break;
 
 				}
-//				cClass = "ama"; 
+//				cClass = "ama";
 				break;
 			case 1:
 				switch(iSkillSlot){
@@ -2641,7 +2778,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2QuestPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1154694362190497678L;
 		private Image iBackground;
@@ -2775,7 +2912,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2WayPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -7583208611559380148L;
 		private Image iBackground;
@@ -3010,7 +3147,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 	class D2CharCursorPainterPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 3335835168313769724L;
 		private Image iBackground;
@@ -3068,7 +3205,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 //						//	// System.err.println("Drop item");
 //						//		                        // since there is an item on the mouse, try
 //						// to drop it here
-//						//		                    	
+//						//
 //						//		                        D2Item lDropItem = D2MouseItem.getItem();
 //						//// int lDropWidth = lDropItem.get_width();
 //						//// int lDropHeight = lDropItem.get_height();
@@ -3104,13 +3241,13 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 //						//		                            iChar.markCharGrid(lDropItem);
 //						//		                            // move the item to a new charcter, if needed
 //						//	                                iChar.addCharItem(D2MouseItem.removeItem());
-//						//		
+//						//
 //						//		                            setModified( true );
-//						//		
+//						//
 //						//		                            // redraw
 //						//		                            build();
 //						//		                            repaint();
-//						//		                            
+//						//
 //						//		                            setCursorPickupItem();
 //						//		                            //my_char.show_grid();
 //						//		                        }
@@ -3297,7 +3434,7 @@ public class D2ViewChar extends JInternalFrame implements D2ItemContainer, D2Ite
 			}
 		}finally{
 			iCharacter.listenItemListEvents();
-			iCharacter.fireD2ItemListEvent();	
+			iCharacter.fireD2ItemListEvent();
 		}
 	}
 

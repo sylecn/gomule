@@ -2,7 +2,7 @@
 
 gomule bugs and feature request
 * 
-* feature: mule MAX gold to char
+* DONE feature: mule MAX gold to char
   add a button in "Transfer" section:
   [to char] MAX Gold [from char]
 
